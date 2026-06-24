@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Dark navy rounded square background -->
+  <rect width="64" height="64" rx="14" fill="#05101e"/>
+  <!-- White M -->
+  <text
+    x="7"
+    y="47"
+    font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+    font-weight="900"
+    font-size="42"
+    fill="#ffffff"
+    letter-spacing="-1"
+  >M</text>
+  <!-- Sky blue dot -->
+  <circle cx="56" cy="46" r="5" fill="#0ea5e9"/>
+</svg>

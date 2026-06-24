@@ -1,26 +1,325 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-oxygen);
+  --font-display: 'Satoshi', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Mobile nav: animated hamburger → X, and the dropdown panel */
+.nav-toggle {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+.nav-toggle__bar {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease,
+    background-color 0.3s ease;
+}
+.nav-toggle__bar:nth-child(1) { top: 6px; }
+.nav-toggle__bar:nth-child(2) { top: 11px; }
+.nav-toggle__bar:nth-child(3) { top: 16px; }
+.nav-toggle.is-open .nav-toggle__bar:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.nav-toggle.is-open .nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.3);
+}
+.nav-toggle.is-open .nav-toggle__bar:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+.nav-menu {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: opacity 0.3s ease, transform 0.34s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.34s;
+}
+.nav-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  /* slight lead so the navbar finishes turning white before the menu rolls in */
+  transition-delay: 0.1s;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-oxygen), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Headings default to the display face (Satoshi) */
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+/* Hero heading/quote grid: single col on mobile, 2fr/1fr on desktop */
+@media (min-width: 768px) {
+  .md-hero-grid {
+    grid-template-columns: 2fr 1fr !important;
+    gap: 3rem !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   TYPE SYSTEM — Satoshi (display/accent) + Oxygen (body/UI)
+   Tokens set family/size/weight/line-height/tracking/case only.
+   Color stays inline on elements (varies across light/dark sections).
+   Oxygen ships 300/400/700 only → body regular = 400, emphasis = 700.
+   See TYPOGRAPHY.md for the full reference.
+---------------------------------------------------------------------------- */
+@layer components {
+  /* Display / headings — Satoshi */
+  .t-display-xl {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(4rem, 10vw, 8.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+  }
+  .t-display-lg {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.05;
+  }
+  .t-h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1.12;
+  }
+  .t-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.05rem, 2vw, 1.4rem);
+    line-height: 1.2;
+  }
+  .t-brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    letter-spacing: -0.01em;
+  }
+
+  /* Eyebrows / labels — Satoshi */
+  .t-eyebrow {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .t-eyebrow-sm {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .t-lead {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    letter-spacing: 0.02em;
+  }
+  .t-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Body & UI — Oxygen (regular 400; use font-bold for 700 emphasis) */
+  .t-body-lg {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .t-body-sm {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .t-nav {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1.0625rem;
+  }
+  .t-button {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+  .t-tag {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.75rem;
+  }
+  .t-link {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  .t-stat {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.875rem;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   "Get in touch" button — split-fill hover animation.
+   Rest: white base, dark label, sky-blue circle + white arrow on the right.
+   Hover: fills sky-blue, label turns white & slides right, circle slides left
+   and inverts (white circle, sky-blue arrow).
+   Geometry uses calc(100% - …) so it works at any label length.
+---------------------------------------------------------------------------- */
+@layer components {
+  .git-btn {
+    /* Geometry vars — variants can resize the button by overriding these */
+    --gh: 56px; /* height */
+    --gi: 5px; /* circle inset */
+    --gc: calc(var(--gh) - 2 * var(--gi)); /* circle diameter */
+    --gpl: 30px; /* left padding (text side) */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: var(--gh);
+    padding-left: var(--gpl);
+    padding-right: calc(var(--gc) + var(--gi) + 14px);
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    isolation: isolate;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+  .git-btn__label {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    color: #0f172a;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
+    will-change: transform;
+  }
+  .git-btn__circle {
+    position: absolute;
+    top: var(--gi);
+    bottom: var(--gi);
+    aspect-ratio: 1 / 1;
+    left: calc(100% - var(--gc) - var(--gi));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #0ea5e9;
+    color: #ffffff;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease,
+      color 0.4s ease;
+  }
+  .git-btn:hover {
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+  }
+  .git-btn:hover .git-btn__label {
+    transform: translateX(var(--gc));
+    color: #ffffff;
+  }
+  .git-btn:hover .git-btn__circle {
+    left: var(--gi);
+    background: #ffffff;
+    color: #0ea5e9;
+  }
+
+  /* On-light variant — sky-blue base, inverts to white on hover.
+     The circle/label motion is inherited from the base .git-btn:hover rules;
+     only the colors are swapped here. */
+  .git-btn--on-light {
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+  }
+  .git-btn--on-light .git-btn__label {
+    color: #ffffff;
+  }
+  .git-btn--on-light .git-btn__circle {
+    background: #ffffff;
+    color: #0ea5e9;
+  }
+  .git-btn--on-light:hover {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .git-btn--on-light:hover .git-btn__label {
+    color: #0f172a;
+  }
+  .git-btn--on-light:hover .git-btn__circle {
+    background: #0ea5e9;
+    color: #ffffff;
+  }
+
+  /* Ghost variant — for the navbar. Smaller; rests transparent with
+     scroll-driven colors (via --nav-* custom props set inline in Navbar.tsx),
+     and fills sky-blue on hover with the same circle-slide as the others. */
+  .git-btn--ghost {
+    --gh: 44px;
+    --gi: 4px;
+    --gpl: 22px;
+    background: var(--nav-bg, transparent);
+    border-color: var(--nav-border, rgba(255, 255, 255, 0.3));
+    backdrop-filter: var(--nav-blur, none);
+  }
+  .git-btn--ghost .git-btn__label {
+    font-size: 1.0625rem;
+    color: var(--nav-text, #ffffff);
+    text-shadow: var(--nav-shadow, none);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+  }
+  .git-btn--ghost .git-btn__circle {
+    background: #0ea5e9;
+    color: #ffffff;
+  }
+  .git-btn--ghost:hover .git-btn__label {
+    text-shadow: none;
+  }
 }
