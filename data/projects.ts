@@ -1,11 +1,85 @@
-// Single source of truth for featured work — read by both the home grid
+// Single source of truth for featured work, read by both the home grid
 // (components/FeaturedWork.tsx) and the detail pages (app/work/[slug]/page.tsx).
 
 export type Block =
-  | { type: 'section'; label?: string; heading: string; body: string[] }
-  | { type: 'image'; ratio?: string; caption?: string }
-  | { type: 'gallery'; items: { ratio?: string; caption?: string }[] }
+  | { type: 'section'; label?: string; heading: string; body?: string[]; bullets?: string[] }
+  | { type: 'image'; src?: string; ratio?: string; caption?: string }
+  | { type: 'gallery'; items: { src?: string; ratio?: string; caption?: string; tint?: boolean }[] }
   | { type: 'callout'; text: string; attribution?: string }
+  | { type: 'quote'; label?: string; text: string; attribution?: string }
+  | { type: 'metrics'; items: { value: string; label: string }[] }
+  | {
+      type: 'points'
+      label?: string
+      heading?: string
+      items: { title: string; body: string }[]
+    }
+  | {
+      // text + image side by side (stacks on mobile)
+      type: 'split'
+      label?: string
+      heading?: string
+      body?: string[]
+      bullets?: string[]
+      src?: string
+      ratio?: string
+      caption?: string
+      imageSide?: 'left' | 'right'
+    }
+  | { type: 'fullbleed'; src?: string; ratio?: string; caption?: string }
+  | { type: 'stat'; value: string; label: string; caption?: string }
+  | {
+      type: 'columns'
+      label?: string
+      heading?: string
+      items: { heading?: string; body: string[] }[]
+    }
+  | {
+      // multi-image grid (3 across on desktop)
+      type: 'photos'
+      items: { src?: string; ratio?: string; caption?: string }[]
+    }
+  | { type: 'embed'; src?: string; ratio?: string; caption?: string; title?: string }
+  | {
+      type: 'timeline'
+      label?: string
+      heading?: string
+      items: { date?: string; title: string; body?: string }[]
+    }
+  | {
+      // grayscale logos (with src) or tech/tool pills (label only)
+      type: 'logos'
+      label?: string
+      items: { label: string; src?: string }[]
+    }
+  | {
+      // draggable before/after image comparison
+      type: 'beforeAfter'
+      beforeSrc?: string
+      afterSrc?: string
+      ratio?: string
+      beforeLabel?: string
+      afterLabel?: string
+      caption?: string
+    }
+  | { type: 'statChart'; value: string; label: string; caption?: string; data: number[] }
+  | { type: 'takeaways'; heading?: string; items: string[] }
+  | {
+      // horizontal process/pipeline, connected steps with arrows between them.
+      // Stacks vertically on mobile (arrows point down). Best with 3–5 steps.
+      type: 'process'
+      label?: string
+      heading?: string
+      steps: { title: string; body?: string }[]
+    }
+  | {
+      // responsive 3-column tile grid. Content tiles (with a title) auto-number
+      // in order; image tiles (no title) render a src or a placeholder box.
+      type: 'tileGrid'
+      label?: string
+      heading?: string
+      items: { title?: string; body?: string; src?: string; placeholder?: string }[]
+    }
 
 export type Project = {
   slug: string
@@ -15,6 +89,8 @@ export type Project = {
   tags: string[]
   placeholder: string
   image: string | null
+  // brand/product logo shown on the card thumbnail (bottom-left); rendered white via CSS filter
+  logo?: string | null
   // detail page
   year: string
   company: string
@@ -22,7 +98,13 @@ export type Project = {
   liveUrl?: string
   heroImage?: string | null
   heroPlaceholder: string
-  tldr: { statement: string; paragraph: string }
+  // optional override for the hero meta strip (defaults to Company/Platform/Year)
+  heroMeta?: [string, string][]
+  tldr: {
+    statement: string
+    paragraph: string
+    facts?: { label: string; value: string }[]
+  }
   blocks: Block[]
 }
 
@@ -34,7 +116,7 @@ const defaultBlocks = (title: string): Block[] => [
     label: 'Overview',
     heading: 'The story behind the work',
     body: [
-      `This is placeholder copy for ${title}. Replace it with the real narrative — what the problem was, who it affected, and why it mattered now.`,
+      `This is placeholder copy for ${title}. Replace it with the real narrative, what the problem was, who it affected, and why it mattered now.`,
       'Keep it tight and outcome-focused. The home page already carries the one-liner; this page is where the thinking gets room to breathe.',
     ],
   },
@@ -58,50 +140,113 @@ export const projects: Project[] = [
     slug: 'edx-mobile-app-rewrite',
     title: 'edX Mobile App Rewrite',
     description:
-      'Legacy mobile experience rebuilt into modern native iOS and Android apps under a tight delivery window.',
+      'Legacy edX mobile apps rebuilt as modern native iOS and Android, on a tight timeline.',
     tags: ['Mobile', 'Platform Rewrite', 'Product Delivery'],
     placeholder: 'linear-gradient(135deg, #0c2340 0%, #1a3a5c 100%)',
-    image: null,
+    image: '/work/edx-featured.png',
+    logo: '/logos/edX by 2U logo.svg',
     year: '2023',
     company: 'edX',
     platform: 'iOS · Android',
     liveUrl: 'https://www.edx.org/',
-    heroImage: null,
+    heroImage: '/work/edx-hero.png',
     heroPlaceholder: 'linear-gradient(135deg, #0c2340 0%, #1a3a5c 100%)',
+    heroMeta: [
+      ['Company', 'edX'],
+      ['Role', 'Product Manager'],
+      ['Platform', 'iOS & Android'],
+    ],
     tldr: {
-      statement: 'A full native rewrite of the edX learner apps, shipped under a tight delivery window.',
+      statement:
+        'A ground-up rewrite of the edX mobile apps, shipped across iOS and Android without disrupting millions of active learners.',
       paragraph:
-        'We rebuilt the legacy mobile experience into modern native iOS and Android apps — coordinating product, engineering, design, and platform teams to ship without disrupting millions of active learners.',
+        'I led the product side of rebuilding edX’s iOS and Android apps: scoping the MVP, aligning teams across three organizations, and steering a high-stakes launch that kept reliability rock-solid.',
+      facts: [
+        { label: 'Role', value: 'Product lead' },
+        { label: 'Teams', value: '3 orgs, 1 roadmap' },
+        { label: 'Reliability', value: '99%+ crash-free' },
+      ],
     },
     blocks: [
       {
         type: 'section',
-        label: 'The problem',
-        heading: 'A legacy app holding the experience back',
+        label: 'The Challenge',
+        heading: 'A platform learners trusted, on architecture that couldn’t carry the future',
         body: [
-          'Placeholder: describe the state of the legacy mobile apps — the performance issues, the maintenance burden, and what it was costing the learner experience.',
-          'Set up the stakes and the constraint: a tight delivery window with a large, active user base that could not be disrupted.',
+          'The edX mobile apps were stable and serving learners at scale. But the architecture underneath had hit its limit: it was getting harder to build the experiences we wanted, and harder for internal teams and the Open edX community to contribute.',
+          'This was never a rescue mission for a broken app. As a major contributor to the Open edX ecosystem, edX had a chance to move onto a modern native foundation that both edX.org learners and the wider community could build on for years.',
         ],
       },
-      { type: 'image', ratio: '16 / 9', caption: 'Before / after, or the new app home screen.' },
+      {
+        type: 'callout',
+        text: 'Rebuild everything on a modern foundation, while preserving the reliability, quality, and learner trust the existing apps had already earned.',
+      },
+      {
+        type: 'image',
+        src: '/work/edx-learn.png',
+      },
       {
         type: 'section',
         label: 'Approach',
-        heading: 'Rebuilding native, team by team',
+        heading: 'Ruthless scope, one roadmap, many teams',
         body: [
-          'Placeholder: how the rewrite was scoped and sequenced across iOS and Android, and how cross-functional teams were coordinated.',
+          'I owned the product side end to end, scope definition, roadmap, delivery coordination, launch planning, and stakeholder communication.',
+          'We anchored on an MVP at ~80% feature parity with production, making explicit calls on what had to ship at launch versus what could follow. Every decision was weighed against timeline, learner impact, and the risk of disrupting familiar behavior.',
+        ],
+        bullets: [
+          'Aligned three organizations, edX.org mobile, TouchApp Media, and Open edX contributors (Racoon Gang, Schema Education), around a single roadmap and shared ways of working',
+          'Set up cross-team planning, async updates, internal and community demos, decision logs, and clear blocker escalation',
+          'Partnered with design and engineering so the apps weren’t just modern under the hood, but meaningfully better for learners',
+          'Worked with branding and UX on store presence, preview assets, and the “What’s New” moment, so it landed as a product release, not a migration',
         ],
       },
       {
         type: 'gallery',
         items: [
-          { ratio: '3 / 4', caption: 'iOS screen' },
-          { ratio: '3 / 4', caption: 'Android screen' },
+          { src: '/work/edx-dates.png' },
+          { src: '/work/edx-dark.png' },
         ],
       },
       {
-        type: 'callout',
-        text: 'Add a headline outcome here — adoption, performance, or delivery metric.',
+        type: 'points',
+        label: 'What made it complex',
+        heading: 'Not a rewrite, a multi-team product transformation',
+        items: [
+          {
+            title: 'Coordination without authority',
+            body: 'Internal teams, external partners, and community contributors, each with different ownership models and working styles. My job was to align priorities and keep everyone moving together toward one launch.',
+          },
+          {
+            title: 'Holding the line on scope',
+            body: 'A rewrite invites an endless wish list. We made disciplined trade-offs across parity, learner experience, accessibility, in-app purchases, analytics, and release readiness, ambitious enough to justify the rewrite, focused enough to ship.',
+          },
+          {
+            title: 'Launching without regressions',
+            body: 'The quality bar was already high, so success wasn’t about fixing broken metrics. It meant shipping a fully rebuilt app while preserving engagement and reliability across a large global learner base.',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Outcome',
+        heading: 'A modern app, shipped without breaking trust',
+        body: [
+          'The new apps launched on iOS and Android, built with SwiftUI and Jetpack Compose, bringing a redesigned Learn tab, improved Course Home, clearer Dates, better Discussions, refreshed branding, and Dark Mode.',
+          'Most importantly, the rebuild held edX’s reliability bar through the transition, and store ratings improved as learners responded to the new experience.',
+        ],
+      },
+      {
+        type: 'metrics',
+        items: [
+          { value: '~99%+', label: 'Crash-free stability, carried through the transition' },
+          { value: 'iOS + Android', label: 'Rebuilt natively, in parallel' },
+          { value: '80%', label: 'Feature parity targeted for the MVP' },
+          { value: 'Higher', label: 'App Store & Play Store ratings after launch' },
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'A defining example of leading through ambiguity, bringing product, engineering, design, QA, branding, and community together to ship a high-stakes rewrite without compromising learner trust.',
       },
     ],
   },
@@ -109,10 +254,11 @@ export const projects: Project[] = [
     slug: 'edx-in-app-payments',
     title: 'edX In-App Payments',
     description:
-      'Scaled mobile monetization by enabling Apple Pay and Google Pay upgrades across thousands of courses.',
+      'Apple Pay and Google Pay upgrades that scaled mobile revenue across the course catalog.',
     tags: ['Monetization', 'Mobile', 'Growth'],
     placeholder: 'linear-gradient(135deg, #091a2e 0%, #0f2d4a 100%)',
     image: null,
+    logo: '/logos/edX by 2U logo.svg',
     year: '2024',
     company: 'edX',
     platform: 'iOS · Android',
@@ -130,30 +276,209 @@ export const projects: Project[] = [
     slug: 'interiors-source',
     title: 'Interiors Source',
     description:
-      'Compressed 0→1 discovery for a B2B trade marketplace using an AI-first product workflow.',
+      '0→1 discovery for a B2B trade marketplace, run on an AI-first product workflow.',
     tags: ['Marketplace', '0→1 Discovery', 'AI Workflow'],
     placeholder: 'linear-gradient(135deg, #0a1f1a 0%, #103028 100%)',
-    image: null,
+    image: '/work/interiors-source-hero.png',
+    logo: '/logos/Interiors Source Logo.svg',
     year: '2025',
     company: 'Interiors Source',
     platform: 'Web',
-    heroImage: null,
+    heroImage: '/work/interiors-source-hero.png',
     heroPlaceholder: 'linear-gradient(135deg, #0a1f1a 0%, #103028 100%)',
+    heroMeta: [
+      ['Company', 'Interiors Source'],
+      ['Role', 'Product Manager'],
+      ['Platform', 'B2B Marketplace'],
+    ],
     tldr: {
-      statement: 'A compressed 0→1 discovery for a B2B trade marketplace.',
+      statement:
+        'A B2B trade marketplace taken from a broad, ambiguous vision to a clear, buildable MVP in two weeks, using an AI-first discovery workflow.',
       paragraph:
-        'Used an AI-first product workflow to move from ambiguity to a validated direction in a fraction of the usual time.',
+        'I led discovery and product definition for Interiors Source, a marketplace built to unify the fragmented workflows of interior-design trade professionals, suppliers, and clients. Using AI as an operating layer for research, synthesis, and prototyping, I compressed 0→1 discovery and aligned the client and team around a sharp, defensible MVP scope.',
+      facts: [
+        { label: 'Role', value: 'Product lead, discovery' },
+        { label: 'Timeline', value: '2 weeks, concept → MVP' },
+        { label: 'Approach', value: 'AI-first workflow' },
+      ],
     },
-    blocks: defaultBlocks('Interiors Source'),
+    blocks: [
+      {
+        type: 'section',
+        label: 'The Challenge',
+        heading: 'A trade industry that ran on relationships, not systems',
+        body: [
+          'Interiors Source set out to build a B2B trade marketplace for the interior-design industry: one platform to reduce the fragmentation across a wide cast of actors. That cast included interior designers as the primary user, plus their end clients, vendors and manufacturers, general contractors and developers, retailers, and the internal team running operations.',
+          'The opportunity wasn’t simply to “put products online.” The real challenge was understanding how the pieces of the trade journey could come together in one seamless flow: discovery, pricing visibility, trade access, quoting, wishlists, project management, purchasing, payments, order tracking, and logistics.',
+          'This was a space where work happened through supplier relationships, scattered catalogs, email threads, and phone calls. It was manual, offline, and rarely connected through technology.',
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'Bring clarity to the ambiguity: understand the market, map the trade journey, define the business model, align stakeholders, and translate a broad vision into a buildable MVP.',
+      },
+      {
+        type: 'image',
+        src: '/work/interiors-source-fragmented-journey.png',
+        ratio: '16 / 9',
+        caption: 'How sourcing worked before Interiors Source: a designer at the center of a dozen disconnected tools.',
+      },
+      {
+        type: 'section',
+        label: 'Approach',
+        heading: 'One PM, one connected workflow',
+        body: [
+          'The usual 0→1 model splits the work across people and weeks: a PM runs discovery and research, hands findings to a designer, waits for a prototype, and pays for every revision in days. On Interiors Source, it was a single connected loop. I ran the interviews, the research, and the prototyping myself, with AI as the connective tissue between them.',
+          'Instead of a stack of documents, the whole vision became something we could see, which made the scope calls (ship now, simplify, defer) far sharper.',
+        ],
+      },
+      {
+        type: 'tileGrid',
+        label: 'The AI workflow',
+        heading: 'How the pieces connected',
+        items: [
+          {
+            title: 'AI notetakers',
+            body: 'Captured every discovery session accurately, so I could drive the conversation instead of scribbling notes.',
+          },
+          {
+            title: 'Consistent context',
+            body: 'Fed those transcripts into LLMs to synthesize inputs and keep decisions structured and consistent.',
+          },
+          { src: '/work/interiors-source-prototyping.png', placeholder: 'AI prototyping' },
+          { src: '/work/interiors-source-notetaker.png', placeholder: 'AI notetaker' },
+          {
+            title: 'Grounded research',
+            body: 'That shared context sharpened market and tooling research across the trade workflow.',
+          },
+          {
+            title: 'Tailored prototypes',
+            body: 'Flows built fast and cheap, using industry-standard patterns shaped to the Interiors Source vision.',
+          },
+        ],
+      },
+      {
+        type: 'timeline',
+        label: 'How it unfolded',
+        heading: 'Five discovery sessions, then into the build',
+        items: [
+          {
+            date: 'Sessions 1–2',
+            title: 'Users & use cases',
+            body: 'Mapped every actor in the trade: designers as the primary user, plus end clients, vendors, GCs and developers, retailers, and admins. Captured their pain points, how they get work done today, and what the ideal solution looks like.',
+          },
+          {
+            date: 'Session 3',
+            title: 'Market & tooling landscape',
+            body: 'What solutions already exist, and the tools trade pros stitch together for sourcing, communication, quoting, and project management.',
+          },
+          {
+            date: 'Start of ideation',
+            title: 'AI prototyping begins',
+            body: 'Started building the first flows straight out of discovery, covering catalog, pricing, and quoting, all tailored to Interiors Source and ready to react to.',
+          },
+          {
+            date: 'Session 4',
+            title: 'Launch priorities & early validation',
+            body: 'What’s essential for launch, how monetization works, and the gaps still open, alongside early validation on the first prototype flows.',
+          },
+          {
+            date: 'Session 5',
+            title: 'Business model & validation',
+            body: 'Quoting, commissions, the business model, and project management, all reviewed against the live prototype rather than a deck.',
+          },
+          {
+            date: 'Next',
+            title: 'Into MVP development',
+            body: 'The prototype and discovery report carried straight into the build as a living reference for engineering and design.',
+          },
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'Because prototyping ran alongside the last two sessions, we reviewed working flows instead of slideware, and tested assumptions in days, not weeks.',
+      },
+      {
+        type: 'gallery',
+        items: [
+          {
+            src: '/work/interiors-source-proto-catalog.png',
+            ratio: '16 / 9',
+            tint: true,
+            caption: 'Marketplace browsing: trade pricing shown against MSRP, with category, color, and delivery filters.',
+          },
+          {
+            src: '/work/interiors-source-proto-quote.png',
+            ratio: '16 / 9',
+            tint: true,
+            caption: 'Pricing and commission: trade vs MSRP per item, client discounts, and commission calculated automatically.',
+          },
+        ],
+      },
+      {
+        type: 'points',
+        label: 'What made it complex',
+        heading: 'Several product models, fused into one platform',
+        items: [
+          {
+            title: 'Many products in one',
+            body: 'Interiors Source was part marketplace, part trade portal, part workflow tool, and eventually part project-management system. Each model carried its own logic, and they all had to coexist.',
+          },
+          {
+            title: 'Different needs per user',
+            body: 'Trade professionals, end clients, suppliers, and internal admins couldn’t all see or do the same things. Role-based permissions and expectations shaped nearly every flow.',
+          },
+          {
+            title: 'Pricing vs product',
+            body: 'Trade tiers, pricing visibility, commissions, and purchase flows affected the product experience so business model alignment and MVP scoping had to happen together.',
+          },
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'The biggest product challenge was avoiding an overloaded MVP. When the vision is broad, every feature feels important, but the AI-assisted prototypes made the trade-offs tangible enough to actually make.',
+      },
+      {
+        type: 'section',
+        heading: 'So, one question shaped the MVP',
+        body: [
+          'Would interior designers actually adopt a centralized sourcing marketplace in their day-to-day workflow?',
+          'The core value proposition was clear: give designers one place to browse products across brands and vendors, access trade pricing, save selections, share them with clients, and complete purchases on-platform. So the MVP was deliberately kept focused on the smallest experience needed to test that behavior.',
+          'Anything that was not required to prove adoption was kept manual or deferred. Vendor onboarding and order status updates could be handled by the Interiors Source team in the early stage, giving the business a real workflow without overbuilding automation too soon.',
+          'Larger product bets like project management, trade professional profiles, community features, advanced vendor logistics, and AI renderings stayed on the roadmap for later phases.',
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Outcome',
+        heading: 'A foundation the team could build on',
+        body: [
+          'Interiors Source moved from a broad product concept to a clear, buildable MVP scope in two weeks. The process aligned the client and internal team around the core marketplace experience, while cleanly separating the immediate MVP from future capabilities.',
+          'The result was a product foundation that gave design and engineering enough clarity to move into execution without losing sight of the larger vision.',
+        ],
+      },
+      {
+        type: 'stat',
+        value: '2 weeks',
+        label: 'From kickoff to a locked MVP scope',
+        caption: 'Discovery, synthesis, prototyping, and stakeholder alignment accelerated through an AI-assisted workflow.',
+      },
+      {
+        type: 'quote',
+        label: 'What I took away',
+        text: 'AI can meaningfully change early-stage product work. Not by replacing product judgment, but by helping a PM explore more options, synthesize faster, align stakeholders earlier, and make sharper scope decisions under ambiguity.',
+      },
+    ],
   },
   {
     slug: 'juniper',
     title: 'Juniper by Arbisoft',
     description:
-      'Built an internal product movement around hackathons, incubation, community, and product culture.',
+      'An internal product movement, hackathons, incubation, and a stronger product culture.',
     tags: ['Product Culture', 'Incubation', 'Leadership'],
     placeholder: 'linear-gradient(135deg, #1a1020 0%, #2a1a38 100%)',
     image: null,
+    logo: '/logos/Juniper logo.svg',
     year: '2025',
     company: 'Arbisoft',
     platform: 'Internal',
@@ -170,10 +495,11 @@ export const projects: Project[] = [
     slug: 'idea-bank',
     title: 'Idea Bank',
     description:
-      'Designed and shipped a lightweight internal idea platform solo in two weeks using AI-assisted development.',
+      'A lightweight internal idea platform, shipped solo in two weeks with AI-assisted dev.',
     tags: ['Internal Tool', 'AI-assisted Build', 'Community'],
     placeholder: 'linear-gradient(135deg, #0f1e30 0%, #1c3248 100%)',
     image: null,
+    logo: '/logos/Juniper logo.svg',
     year: '2025',
     company: 'Arbisoft',
     platform: 'Web',
@@ -182,7 +508,7 @@ export const projects: Project[] = [
     tldr: {
       statement: 'A lightweight internal idea platform, shipped solo in two weeks.',
       paragraph:
-        'Designed and built end-to-end using AI-assisted development — a small tool that gave ideas a home and a path forward.',
+        'Designed and built end-to-end using AI-assisted development, a small tool that gave ideas a home and a path forward.',
     },
     blocks: defaultBlocks('Idea Bank'),
   },
@@ -194,6 +520,7 @@ export const projects: Project[] = [
     tags: ['AI Product', 'Incubation', 'HR Tech'],
     placeholder: 'linear-gradient(135deg, #0d1c0e 0%, #162e18 100%)',
     image: null,
+    logo: '/logos/Arbisoft Logo.svg',
     year: '2026',
     company: 'Arbisoft',
     platform: 'Web',
@@ -202,7 +529,7 @@ export const projects: Project[] = [
     tldr: {
       statement: 'An AI-powered mock interview platform, in incubation.',
       paragraph:
-        'Building a product that helps candidates practice and hiring teams evaluate — currently being incubated 0→1.',
+        'Building a product that helps candidates practice and hiring teams evaluate, currently being incubated 0→1.',
     },
     blocks: defaultBlocks('BenchPrep'),
   },

@@ -33,7 +33,7 @@ export default function Philosophy() {
               Product philosophy
             </p>
             <h2 className="t-h2 mb-8" style={{ color: '#0f172a' }}>
-              From ambiguity, to clarity, to shipped.
+              How I work
             </h2>
             <p className="t-body-lg" style={{ color: '#475569' }}>
               I believe good product work is about creating clarity where there is noise, making tradeoffs visible, and helping teams learn through shipping.

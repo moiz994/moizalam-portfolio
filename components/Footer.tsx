@@ -47,7 +47,7 @@ export default function Footer() {
             </p>
             {[
               { label: 'Email', href: 'mailto:moizalam994@gmail.com' },
-              { label: 'LinkedIn', href: 'https://linkedin.com/in/moizalam' },
+              { label: 'LinkedIn', href: 'https://www.linkedin.com/in/moiz994/' },
               { label: 'Resume', href: '#' },
             ].map(({ label, href }) => (
               <a

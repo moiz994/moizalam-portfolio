@@ -18,12 +18,12 @@ export default function About() {
           <div className="flex flex-col justify-between gap-8 md:pt-16">
             <p className="t-body-lg" style={{ color: '#334155' }}>
               I'm a product manager focused on building clean, intuitive products
-              that solve real-world problems. I thrive in the messy middle —
+              that solve real-world problems. I thrive in the messy middle,
               turning fuzzy user problems into crisp specs, then shipping them.
             </p>
             <div className="flex items-center justify-between gap-6">
               <p className="t-body-sm" style={{ color: '#94a3b8' }}>
-                Let's Build Something<br />Meaningful Together
+                Let's Build Something Meaningful Together
               </p>
               <GetInTouchButton variant="onLight" className="flex-shrink-0" />
             </div>
@@ -36,10 +36,10 @@ export default function About() {
           style={{ borderTop: '1px solid rgba(0,0,0,0.07)', paddingTop: '2.5rem' }}
         >
           {[
-            { num: '5+', label: 'Years in product' },
-            { num: '20+', label: 'Features shipped' },
-            { num: '3×', label: 'Avg. retention lift' },
-            { num: '0→1', label: 'Products built' },
+            { num: '7+', label: 'Years in product' },
+            { num: '100+', label: 'Features shipped' },
+            { num: '4', label: 'Industries worked in' },
+            { num: '5', label: '0→1 products launched' },
           ].map(({ num, label }) => (
             <div key={label} className="p-6 rounded-2xl" style={{ background: '#f5f5f5' }}>
               <p className="t-stat mb-1" style={{ color: '#0f172a' }}>{num}</p>

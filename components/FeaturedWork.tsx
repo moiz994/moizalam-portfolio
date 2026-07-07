@@ -1,12 +1,7 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
 import { projects } from '@/data/projects'
 
 export default function FeaturedWork() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
   return (
     <section className="px-6 md:px-14 py-28" style={{ background: '#f5f5f5' }}>
       <div className="max-w-6xl mx-auto">
@@ -31,89 +26,108 @@ export default function FeaturedWork() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {projects.map((project, i) => {
-            const isHovered = hoveredIndex === i
-            return (
-              <Link
-                key={i}
-                href={`/work/${project.slug}`}
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
+          {projects.map((project, i) => (
+            <Link
+              key={i}
+              href={`/work/${project.slug}`}
+              className="featured-card"
+              style={{
+                position: 'relative',
+                display: 'block',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                aspectRatio: '12 / 9',
+                cursor: 'pointer',
+                background: project.image
+                  ? `url(${project.image}) center/cover no-repeat`
+                  : project.placeholder,
+                boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+                transition: 'box-shadow 0.35s ease',
+              }}
+            >
+              {/* Base gradient — a light resting wash under the logo. Kept subtle so darker
+                  thumbnail images aren't over-darkened; the logo still reads white against it. */}
+              <div
                 style={{
-                  position: 'relative',
-                  display: 'block',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  aspectRatio: '4 / 5',
-                  cursor: 'pointer',
-                  background: project.image ? `url(${project.image}) center/cover no-repeat` : project.placeholder,
-                  boxShadow: isHovered
-                    ? '0 20px 60px rgba(0,0,0,0.18)'
-                    : '0 2px 12px rgba(0,0,0,0.07)',
-                  transition: 'box-shadow 0.35s ease, transform 0.35s ease',
-                  transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(to top, rgba(5,16,30,0.6) 0%, rgba(5,16,30,0.18) 45%, transparent 100%)',
                 }}
-              >
-                {/* Placeholder label — remove once images are in */}
-                {!project.image && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: isHovered ? 0 : 0.25,
-                      transition: 'opacity 0.3s ease',
-                    }}
-                  >
-                    <span className="t-eyebrow-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                      Image coming soon
-                    </span>
-                  </div>
-                )}
+              />
 
-                {/* Mobile/tablet: always-visible title overlay (no hover available) */}
+              {/* Deeper gradient — fades in on hover so the revealed text stays legible */}
+              <div
+                className="featured-hover-bg"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(to top, rgba(5,16,30,0.97) 0%, rgba(5,16,30,0.82) 50%, rgba(5,16,30,0.4) 100%)',
+                }}
+              />
+
+              {/* Placeholder label — remove once images are in. Fades on hover. */}
+              {!project.image && (
                 <div
-                  className="flex flex-col justify-end md:hidden"
+                  className="featured-coming-soon"
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to top, rgba(5,16,30,0.92) 0%, rgba(5,16,30,0.3) 50%, transparent 100%)',
-                    padding: '1.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: 0.25,
+                    transition: 'opacity 0.3s ease',
                   }}
                 >
+                  <span className="t-eyebrow-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    Image coming soon
+                  </span>
+                </div>
+              )}
+
+              {/* Single bottom-anchored content block. The logo rests at the bottom; on hover the
+                  reveal below it expands, pushing the logo upward in one smooth motion. */}
+              <div
+                className="flex flex-col justify-end"
+                style={{ position: 'absolute', inset: 0, padding: '1.5rem' }}
+              >
+                {project.logo ? (
+                  <img
+                    src={project.logo}
+                    alt={project.title}
+                    style={{
+                      height: 28,
+                      width: 'auto',
+                      maxWidth: '65%',
+                      objectFit: 'contain',
+                      objectPosition: 'left bottom',
+                      filter: 'brightness(0) invert(1)',
+                      opacity: 0.95,
+                    }}
+                  />
+                ) : (
                   <h3 className="t-title" style={{ color: '#ffffff' }}>
                     {project.title}
                   </h3>
-                </div>
+                )}
 
-                {/* Desktop: full hover overlay */}
-                <div
-                  className="hidden md:flex"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background:
-                      'linear-gradient(to top, rgba(5,16,30,0.97) 0%, rgba(5,16,30,0.82) 50%, rgba(5,16,30,0.4) 100%)',
-                    opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.35s ease',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    padding: '1.75rem',
-                  }}
-                >
-                  {/* Content slides up on hover */}
-                  <div
-                    style={{
-                      transform: isHovered ? 'translateY(0)' : 'translateY(12px)',
-                      transition: 'transform 0.35s ease',
-                    }}
-                  >
-                    <h3 className="t-title mb-2" style={{ color: '#ffffff' }}>
-                      {project.title}
-                    </h3>
-                    <p className="t-body-sm mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                {/* Reveal: collapsed to zero height at rest, grows below the logo on hover */}
+                <div className="featured-reveal-wrap">
+                  <div className="featured-reveal-inner">
+                    <p
+                      className="t-body-sm"
+                      style={{
+                        color: 'rgba(255,255,255,0.7)',
+                        marginTop: '0.85rem',
+                        marginBottom: '1rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
                       {project.description}
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -134,9 +148,9 @@ export default function FeaturedWork() {
                     </div>
                   </div>
                 </div>
-              </Link>
-            )
-          })}
+              </div>
+            </Link>
+          ))}
         </div>
 
       </div>

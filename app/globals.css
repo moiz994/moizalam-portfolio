@@ -85,6 +85,45 @@ h1, h2, h3 {
   }
 }
 
+/* Featured Work cards: logo-first thumbnails.
+   Resting state (all devices): logo sits bottom-left. On hover the description +
+   tags reveal expands below the logo, pushing it upward in one smooth motion.
+   The reveal only opens on hover, so phones AND tablets (no hover) just show the
+   logo — no width breakpoint needed. */
+.featured-hover-bg {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.featured-reveal-wrap {
+  display: grid;
+  grid-template-rows: 0fr; /* collapsed at rest */
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.featured-reveal-inner {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.05s;
+}
+
+@media (hover: hover) {
+  .featured-card:hover {
+    /* Deeper shadow only — the card holds its position, no lift. */
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16) !important;
+  }
+  .featured-card:hover .featured-hover-bg {
+    opacity: 1;
+  }
+  .featured-card:hover .featured-reveal-wrap {
+    grid-template-rows: 1fr;
+  }
+  .featured-card:hover .featured-reveal-inner {
+    opacity: 1;
+  }
+  .featured-card:hover .featured-coming-soon {
+    opacity: 0;
+  }
+}
+
 /* ----------------------------------------------------------------------------
    TYPE SYSTEM — Satoshi (display/accent) + Oxygen (body/UI)
    Tokens set family/size/weight/line-height/tracking/case only.

@@ -5,57 +5,78 @@ import { useState } from 'react'
 const roles = [
   {
     title: 'Senior Product Manager',
-    duration: '2025 — Present',
+    duration: '2025 – Present',
     company: 'Arbisoft',
     logos: [{ src: '/logos/Arbisoft Logo.svg', alt: 'Arbisoft', h: 60 }],
     description:
-      'Leading product strategy, AI-first discovery, incubation, and client product work across multiple domains.',
+      'Leading multiple product bets, teams, and AI-first workflows while building stronger systems for discovery, product decision-making, and mentorship.',
     bullets: [
-      'Leading 0→1 discovery for new product bets',
-      'Driving AI-native workflows across product and engineering',
-      'Mentoring PMs and shaping delivery direction',
       "Leading Juniper, Arbisoft's internal product innovation movement",
+      'Learning how to create product direction across multiple teams without becoming the bottleneck for every decision',
+      'Using AI as part of the actual product workflow, from research and synthesis to prototyping and MVP definition',
+      'Mentoring and helping teams move from scattered inputs to sharper product decisions',
     ],
-    tags: ['AI-first discovery', '0→1 products', 'Product strategy', 'Team leadership'],
+    tags: ['AI-first discovery', 'Product strategy', 'Product mentorship', '0→1 products'],
   },
   {
     title: 'Product Manager',
-    duration: '2022 — 2025',
-    company: 'Arbisoft / edX',
-    logos: [
-      { src: '/logos/Arbisoft Logo.svg',  alt: 'Arbisoft', h: 52 },
-      { src: '/logos/edX by 2U logo.svg', alt: 'edX',      h: 60 },
-    ],
+    duration: '2022 – 2025',
+    company: 'Arbisoft',
+    logos: [{ src: '/logos/Arbisoft Logo.svg', alt: 'Arbisoft', h: 60 }],
     description:
-      'Led major mobile product initiatives for edX, including the app rewrite, in-app payments, learner progress, notifications, and analytics.',
-    tags: ['Mobile apps', 'Monetization', 'Platform rewrite', 'Cross-functional delivery'],
+      'Led mobile product work at scale, at edX, while building an internal product movement, at Arbisoft, focused on MVP thinking, incubation, and 0→1 momentum.',
+    bullets: [
+      'Learned how large product teams move from discovery to specs, delivery, measurement, and product strategy',
+      'Worked on mobile learning experiences where small product decisions could affect millions of learners',
+      'Shipped high-impact platform work, including the edX mobile rewrite and in-app payments across thousands of courses',
+      "Founded Juniper and learned how to build product culture, community, and 0→1 momentum inside an organization",
+    ],
+    tags: ['Mobile products', 'Product operations', 'Product discovery', 'Community Building'],
   },
   {
     title: 'Associate Product Manager',
-    duration: '2020 — 2022',
+    duration: '2020 – 2022',
     company: 'Dubizzle Labs',
     logos: [{ src: '/logos/Dubizzle Labs Logo.svg', alt: 'Dubizzle Labs', h: 56 }],
     description:
-      'Delivered CRM and operational products for regional marketplace teams, including a multi-tenant SaaS CRM.',
-    tags: ['CRM', 'SaaS', 'Internal tools', 'Multi-tenant systems'],
+      'Solidified my product fundamentals by working closely with engineers, designers, regional stakeholders, and complex platform decisions.',
+    bullets: [
+      'Built the habit of asking better questions before jumping into solutions',
+      'Learned how to work closely with engineering and UX to shape products, not just pass requirements forward',
+      'Got comfortable with pushback, both receiving it and giving it when product decisions needed defending',
+      'Delivered a multi-tenant CRM and field sales app, which taught me the difference between shipping features and solving operational problems',
+    ],
+    tags: ['Product fundamentals', 'Cross-functional work', 'Platform products', 'Stakeholder alignment'],
   },
   {
     title: 'Business Analyst → Team Lead',
-    duration: '2017 — 2020',
+    duration: '2017 – 2020',
     company: 'Rolustech',
     logos: [{ src: '/logos/Rolustec Logo.svg', alt: 'Rolustech', h: 56 }],
     description:
-      'Built my product foundation through CRM products, client-facing discovery, requirements, and delivery leadership.',
-    tags: ['Business analysis', 'CRM', 'Client communication', 'Team leadership'],
+      'Built a foundation for keeping real customer problems at the center of software development.',
+    bullets: [
+      'Learned how to understand customer workflows before turning them into requirements',
+      'Built a foundation in CRM products, business processes, integrations, and edge cases',
+      'Started moving from documenting requirements to shaping better solutions with clients and engineering teams',
+      'Grew into team leadership while learning how to coordinate people, scope, and delivery expectations',
+    ],
+    tags: ['Problem framing', 'Requirement shaping', 'CRM workflows', 'Team leadership'],
   },
   {
     title: 'BSc Engineering Sciences',
-    duration: '2013 — 2017',
-    company: 'GIK Institute',
+    duration: '2013 – 2017',
+    company: 'Ghulam Ishaq Khan Institute',
     logos: [{ src: '/logos/giki logo.svg', alt: 'GIK Institute', h: 72 }],
     description:
-      'Developed the systems thinking, problem decomposition, and analytical foundation that still shapes how I approach product work.',
-    tags: ['Systems thinking', 'Problem solving', 'Engineering foundation'],
+      'My engineering degree gave me a technical foundation, but university also taught me how to build, coordinate, and lead outside the classroom.',
+    bullets: [
+      'Built a technical foundation across engineering, systems thinking, and problem solving',
+      'Created an automated solar-powered irrigation system that won 2nd prize at the annual industrial open house',
+      'Took part in multiple university societies alongside academics, learning coordination beyond coursework',
+      'Helped organize 8 national-level events, building early confidence in planning, collaboration, and execution',
+    ],
+    tags: ['Technical foundation', 'Systems thinking', 'Early leadership', 'Collaboration'],
   },
 ]
 
@@ -80,9 +101,9 @@ export default function Career() {
           </div>
           <div className="md:pb-2">
             <p className="t-body-lg" style={{ color: '#475569' }}>
-              From CRM systems and marketplace workflows to mobile learning, AI-first discovery,
-              and product incubation, each role has shaped how I bring structure to ambiguity and
-              move teams toward shipped outcomes.
+              From CRM systems and platform products to mobile learning, AI-first discovery,
+              and product incubation, my journey has shaped how I bring structure to ambiguity and
+              help teams move toward shipped outcomes.
             </p>
           </div>
         </div>

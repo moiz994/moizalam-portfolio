@@ -22,7 +22,7 @@ export default function WorkHero({ project }: { project: Project }) {
   }, [])
 
   const hasImage = Boolean(project.heroImage)
-  const meta: [string, string][] = [
+  const meta: [string, string][] = project.heroMeta ?? [
     ['Company', project.company],
     ['Platform', project.platform],
     ['Year', project.year],

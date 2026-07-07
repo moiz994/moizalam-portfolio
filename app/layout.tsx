@@ -10,7 +10,7 @@ const oxygen = Oxygen({
 });
 
 export const metadata: Metadata = {
-  title: "Moiz Alam — Product Manager",
+  title: "Moiz Alam · Product Manager",
   description: "Product Manager focused on building intuitive products that solve real-world problems.",
   icons: {
     icon: '/favicon.svg',

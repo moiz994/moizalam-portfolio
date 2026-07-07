@@ -90,7 +90,7 @@ export default function Hero() {
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr',
-              gap: '2rem',
+              gap: '0.75rem',
               alignItems: 'end',
             }}
             className="md-hero-grid"
