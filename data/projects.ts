@@ -83,6 +83,9 @@ export type Block =
 
 export type Project = {
   slug: string
+  // set true once the real case study is written; unpublished projects are
+  // hidden from the home grid and don't get a /work/[slug] page built
+  published?: boolean
   // card (home grid)
   title: string
   description: string
@@ -138,6 +141,7 @@ const defaultBlocks = (title: string): Block[] => [
 export const projects: Project[] = [
   {
     slug: 'edx-mobile-app-rewrite',
+    published: true,
     title: 'edX Mobile App Rewrite',
     description:
       'Legacy edX mobile apps rebuilt as modern native iOS and Android, on a tight timeline.',
@@ -252,9 +256,10 @@ export const projects: Project[] = [
   },
   {
     slug: 'edx-in-app-payments',
+    published: true,
     title: 'edX In-App Payments',
     description:
-      'Apple Pay and Google Pay upgrades that scaled mobile revenue across the course catalog.',
+      'Native App Store and Play Store purchases that turned course upgrades into a real mobile revenue channel.',
     tags: ['Monetization', 'Mobile', 'Growth'],
     placeholder: 'linear-gradient(135deg, #091a2e 0%, #0f2d4a 100%)',
     image: null,
@@ -265,15 +270,135 @@ export const projects: Project[] = [
     liveUrl: 'https://www.edx.org/',
     heroImage: null,
     heroPlaceholder: 'linear-gradient(135deg, #091a2e 0%, #0f2d4a 100%)',
+    heroMeta: [
+      ['Company', 'edX'],
+      ['Role', 'Product Manager'],
+      ['Platform', 'iOS & Android'],
+    ],
     tldr: {
-      statement: 'Native in-app payments that unlocked mobile monetization at scale.',
+      statement:
+        'Native in-app purchases that turned the edX mobile apps into a $700K+ revenue channel in year one.',
       paragraph:
-        'Enabled Apple Pay and Google Pay upgrades across thousands of courses, turning the mobile apps into a real revenue surface.',
+        'I led product definition for in-app payments on iOS and Android at edX, working across mobile engineering, payments infrastructure, and the commerce platform to bring course upgrades natively into the app, validated first, then built and launched across thousands of courses.',
+      facts: [
+        { label: 'Role', value: 'Product lead' },
+        { label: 'Launch', value: '3,000+ courses' },
+        { label: 'Year 1 revenue', value: '$700K+' },
+      ],
     },
-    blocks: defaultBlocks('edX In-App Payments'),
+    blocks: [
+      {
+        type: 'section',
+        label: 'The Challenge',
+        heading: 'A purchase path that sent mobile intent somewhere else',
+        body: [
+          'Mobile learners could discover courses, enroll, and learn inside the edX app, but they couldn’t complete a paid upgrade without leaving it. Buying meant exiting to a browser, signing in again, and working through a multi-step web checkout.',
+          'For a platform with millions of mobile learners, that gap mattered: people were showing purchase intent on mobile, and the app was routing it away at exactly the moment it needed to hold on to it.',
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'Bring the payment experience into the app, and get from upgrade intent to purchase in as few taps as possible.',
+      },
+      {
+        type: 'beforeAfter',
+        beforeLabel: 'Web checkout',
+        afterLabel: 'Native in-app purchase',
+        caption: 'Placeholder: the old path left the app, signed learners in again, and finished on a web checkout. The new path completed the upgrade without ever leaving the course.',
+      },
+      {
+        type: 'process',
+        label: 'Approach',
+        heading: 'Validating intent before building anything',
+        steps: [
+          {
+            title: 'Painted door test',
+            body: 'Surfaced the upgrade option inside the learning experience to see if learners would engage with it at all.',
+          },
+          {
+            title: 'Positive signal',
+            body: 'The experiment showed meaningful purchase intent from mobile learners, enough to justify real investment.',
+          },
+          {
+            title: 'Native build greenlit',
+            body: 'Moved forward with a full native in-app purchase implementation for iOS and Android.',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        heading: 'Leading product across two platforms and three systems',
+        body: [
+          'I owned product definition for both iOS and Android, working across mobile engineering, payments infrastructure, and the edX commerce platform. The build ran through Apple App Store and Google Play’s in-app purchase checkout flows, which meant designing around each platform’s rules for digital content, purchase handling, refunds, entitlements, and review approval.',
+        ],
+        bullets: [
+          'Defined the purchase flow, entitlement logic, and failure states with engineering and commerce, so a failed or refunded payment never left a learner stuck mid-course',
+          'Shaped the post-purchase experience so an upgrade felt instant and confirmed, not just “payment received”',
+          'Partnered with the data team from the start to define conversion and revenue tracking, so mobile purchases were attributed correctly at launch instead of retrofitted after',
+        ],
+      },
+      {
+        type: 'gallery',
+        items: [
+          { caption: 'Placeholder: iOS App Store purchase sheet for a course upgrade.' },
+          { caption: 'Placeholder: Android Play Store purchase sheet for a course upgrade.' },
+        ],
+      },
+      {
+        type: 'split',
+        label: 'The constraint that shaped everything',
+        heading: 'Thousands of courses, not one store product at a time',
+        body: [
+          'edX.org’s course library was large and constantly changing, so creating a dedicated App Store or Play Store product for every course wasn’t a scalable path.',
+          'We shifted the strategy to consumable products on the mobile stores, letting the app support thousands of course upgrades without a one-to-one mapping between every edX course and a dedicated store product.',
+        ],
+        caption: 'Placeholder: diagram of the consumable-product model mapping store purchases to thousands of edX courses.',
+      },
+      {
+        type: 'points',
+        label: 'What made it complex',
+        heading: 'Not just a checkout feature',
+        items: [
+          {
+            title: 'Platform compliance',
+            body: 'Adapting edX’s web-first commerce system to Apple and Google’s in-app purchase rules, so payments, failures, refunds, and entitlement activation all worked without breaking the learner experience.',
+          },
+          {
+            title: 'Catalog scale',
+            body: 'Thousands of eligible courses meant the solution couldn’t rely on manually configuring every course as its own store product. The consumable-product strategy kept it operationally manageable at that scale.',
+          },
+          {
+            title: 'Measurement',
+            body: 'A new revenue channel needed reliable analytics from day one, so we defined events, revenue attribution, and conversion tracking before launch, not after.',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Outcome',
+        heading: 'A new, measurable revenue channel',
+        body: [
+          'In-app payments launched across 3,000+ courses on both iOS and Android.',
+          'The feature generated over $700,000 in its first year, and turned the mobile app from a learning-only surface into a real monetization channel for edX.',
+        ],
+      },
+      {
+        type: 'metrics',
+        items: [
+          { value: '$700K+', label: 'Revenue generated in the first year' },
+          { value: '3,000+', label: 'Courses enabled for native in-app purchase' },
+          { value: 'iOS + Android', label: 'Launched natively across both platforms' },
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'A clear example of product work where the value was measurable: validated learner intent, solved for platform and catalog complexity, cut checkout friction, and unlocked revenue the app couldn’t capture before.',
+      },
+    ],
   },
   {
     slug: 'interiors-source',
+    published: true,
     title: 'Interiors Source',
     description:
       '0→1 discovery for a B2B trade marketplace, run on an AI-first product workflow.',
@@ -493,6 +618,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'idea-bank',
+    published: true,
     title: 'Idea Bank',
     description:
       'A lightweight internal idea platform, shipped solo in two weeks with AI-assisted dev.',
@@ -505,12 +631,126 @@ export const projects: Project[] = [
     platform: 'Web',
     heroImage: null,
     heroPlaceholder: 'linear-gradient(135deg, #0f1e30 0%, #1c3248 100%)',
+    heroMeta: [
+      ['Company', 'Arbisoft'],
+      ['Role', 'Product Manager'],
+      ['Platform', 'Internal Web'],
+    ],
     tldr: {
-      statement: 'A lightweight internal idea platform, shipped solo in two weeks.',
+      statement:
+        'A lightweight internal idea platform, taken from discovery to MVP launch in two weeks, solo, with AI-assisted development.',
       paragraph:
-        'Designed and built end-to-end using AI-assisted development, a small tool that gave ideas a home and a path forward.',
+        'As part of Juniper, Arbisoft’s internal product-culture initiative, I built Idea Bank: a platform where employees submit, discuss, and build traction around product ideas. I ran discovery, scoped the MVP, and built, tested, and launched it myself, no dedicated engineering team, just AI-assisted tools and a disciplined, tight scope.',
+      facts: [
+        { label: 'Role', value: 'Product lead & solo builder' },
+        { label: 'Timeline', value: '2 weeks, concept → launch' },
+        { label: 'Adoption', value: '200+ employees' },
+      ],
     },
-    blocks: defaultBlocks('Idea Bank'),
+    blocks: [
+      {
+        type: 'section',
+        label: 'Context',
+        heading: 'Juniper needed a home for product ideas',
+        body: [
+          'Juniper is an internal initiative I lead at Arbisoft to build stronger product thinking, experimentation, and innovation across the company. Idea Bank grew out of it: a lightweight platform where employees could submit ideas, discuss them, and build traction around the ones worth pursuing.',
+          'The goal wasn’t just to collect ideas. It was to create a visible space where product conversations could happen more naturally across teams, not just inside product or leadership.',
+        ],
+      },
+      {
+        type: 'section',
+        label: 'The Challenge',
+        heading: 'Good ideas with nowhere to go',
+        body: [
+          'Arbisoft had plenty of product-minded people, but no structured channel for ideas to surface, evolve, and gain traction. Good ideas were scattered across Slack threads, hallway conversations, and personal notes. Some people had ideas but didn’t know where to take them; others wanted to build on someone else’s thinking but had no shared space to even find it.',
+          'The deeper challenge was cultural, not operational. Through Juniper, we wanted product conversations to feel like anyone’s territory, problems, opportunities, ideas, not something reserved for PMs or leadership.',
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'Build a low-friction platform where anyone at Arbisoft could share an idea, engage with someone else’s, and help the good ones move toward evaluation and incubation.',
+      },
+      {
+        type: 'section',
+        label: 'Approach',
+        heading: 'Product thinking and solo execution, in two weeks',
+        body: [
+          'I approached Idea Bank like a product from day one, and took it from discovery to MVP launch in two weeks. Discovery came first: understanding why ideas weren’t being shared consistently, what friction got in the way, and what would make people comfortable contributing. That shaped a focused MVP scope, small enough to build fast, test internally, and improve from real usage.',
+          'There was no dedicated engineering or sprint team behind it. I built and launched the platform myself using AI-assisted development tools, handling the product thinking, scope, build, QA, launch, and iteration end to end.',
+        ],
+        bullets: [
+          'Submit an idea, browse what others had shared, upvote, and comment',
+          'Small gamification layered on top, leaderboards, badges, awards, to make participation feel visible and rewarding without becoming the product itself',
+        ],
+      },
+      {
+        type: 'gallery',
+        items: [
+          { caption: 'Placeholder: idea submission flow.' },
+          { caption: 'Placeholder: leaderboard and badges.' },
+        ],
+      },
+      {
+        type: 'columns',
+        label: 'Running it as an experiment',
+        heading: 'Two bets, tested at once',
+        items: [
+          {
+            heading: 'People will share, if it’s easy',
+            body: [
+              'That employees had ideas worth sharing, as long as the process to contribute was simple enough to lower the activation energy.',
+            ],
+          },
+          {
+            heading: 'AI can stand in for a delivery team',
+            body: [
+              'That AI-assisted development could take a product manager from concept to a working launch without waiting on a traditional engineering team.',
+            ],
+          },
+        ],
+      },
+      {
+        type: 'points',
+        label: 'What made this complex',
+        heading: 'Not a feature problem, a behavior problem',
+        items: [
+          {
+            title: 'Simple, but structured',
+            body: 'The product had to feel simple enough for anyone to use, but structured enough that the ideas stayed useful. Too formal, and people hesitate to contribute. Too casual, and nothing is actionable.',
+          },
+          {
+            title: 'Earning trust',
+            body: 'People needed to believe that submitting an idea was worth it, that it would be seen, and that good ideas had a real shot at moving forward.',
+          },
+          {
+            title: 'PM and builder, at once',
+            body: 'The build was its own experiment in AI-assisted development. I had to define scope, make trade-offs, test flows, and fix issues, while keeping the product focused enough to launch in two weeks.',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Outcome',
+        heading: 'A space that changed who gets to have product ideas',
+        body: [
+          'Idea Bank has been adopted by 200+ employees at Arbisoft, creating a visible space for people to share, discuss, and build on product ideas.',
+          'It also surfaced a pattern worth noticing: some people are strong at spotting problems and proposing ideas, others are excited to execute and refine them. Idea Bank brought both groups into the same space, and let them find each other.',
+          'Beyond the product itself, Idea Bank became part of Juniper’s broader product incubation engine, giving Arbisoft a practical way to capture internal ideas, build product conversations, and identify concepts worth deeper evaluation.',
+        ],
+      },
+      {
+        type: 'metrics',
+        items: [
+          { value: '200+', label: 'Employees actively using Idea Bank' },
+          { value: '2 weeks', label: 'From discovery to MVP launch' },
+          { value: 'Solo', label: 'Built end-to-end with AI-assisted development, no dedicated eng team' },
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'Idea Bank became proof of what AI-assisted solo development can unlock for product managers, not a replacement for engineering teams, but a way to move faster from idea to working product when the scope is clear and the process is disciplined.',
+      },
+    ],
   },
   {
     slug: 'benchprep',

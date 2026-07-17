@@ -9,7 +9,7 @@ import WorkBody from '@/components/work/WorkBody'
 import WorkCta from '@/components/work/WorkCta'
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }))
+  return projects.filter((p) => p.published).map((p) => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({

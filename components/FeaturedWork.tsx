@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { projects } from '@/data/projects'
 
+const publishedProjects = projects.filter((project) => project.published)
+
 export default function FeaturedWork() {
   return (
     <section className="px-6 md:px-14 py-28" style={{ background: '#f5f5f5' }}>
@@ -26,7 +28,7 @@ export default function FeaturedWork() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {projects.map((project, i) => (
+          {publishedProjects.map((project, i) => (
             <Link
               key={i}
               href={`/work/${project.slug}`}
