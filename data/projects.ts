@@ -73,6 +73,14 @@ export type Block =
       steps: { title: string; body?: string }[]
     }
   | {
+      // auto-advancing gallery: full-width main image with a clickable thumbnail
+      // strip below. Rotates every 5s (clicking a thumb resets the timer);
+      // arrows appear when the thumbnails overflow their single row.
+      type: 'carousel'
+      ratio?: string
+      items: { src?: string; caption?: string }[]
+    }
+  | {
       // responsive 3-column tile grid. Content tiles (with a title) auto-number
       // in order; image tiles (no title) render a src or a placeholder box.
       type: 'tileGrid'

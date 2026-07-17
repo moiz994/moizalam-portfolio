@@ -1,5 +1,6 @@
 import type { Block, Project } from '@/data/projects'
 import BeforeAfterSlider from './BeforeAfterSlider'
+import InlineGallery from './InlineGallery'
 
 // Renders a real image when a src is provided, otherwise a rounded gradient
 // placeholder. Mirrors the FeaturedWork card treatment.
@@ -479,6 +480,9 @@ export function BlockView({ block }: { block: Block }) {
           </div>
         </div>
       )
+
+    case 'carousel':
+      return <InlineGallery items={block.items} ratio={block.ratio} />
 
     case 'beforeAfter':
       return (

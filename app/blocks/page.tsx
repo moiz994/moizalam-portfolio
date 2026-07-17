@@ -154,6 +154,26 @@ const showcase: Entry[] = [
     },
   },
   {
+    name: 'carousel — inline gallery',
+    when: 'A main image with a thumbnail strip below. Auto-advances every 5 seconds (with a countdown bar on the active thumb); clicking a thumbnail jumps to it and resets the timer. Arrows appear when the thumbnails overflow their single row.',
+    block: {
+      type: 'carousel',
+      ratio: '16 / 9',
+      items: [
+        { caption: 'First slide — captions swap with the image.' },
+        { caption: 'Second slide caption.' },
+        { caption: 'Third slide caption.' },
+        { caption: 'Fourth slide caption.' },
+        { caption: 'Fifth slide caption.' },
+        { caption: 'Sixth slide caption.' },
+        { caption: 'Seventh slide caption.' },
+        { caption: 'Eighth slide caption.' },
+        { caption: 'Ninth slide caption.' },
+        { caption: 'Tenth slide caption.' },
+      ],
+    },
+  },
+  {
     name: 'fullbleed — wide image',
     when: 'A wide image that breaks past the text column for emphasis — good for a hero shot or a big screen.',
     block: { type: 'fullbleed', ratio: '21 / 9', caption: 'A wider-than-column image.' },
