@@ -632,12 +632,12 @@ export const projects: Project[] = [
       'A lightweight internal idea platform, shipped solo in two weeks with AI-assisted dev.',
     tags: ['Internal Tool', 'AI-assisted Build', 'Community'],
     placeholder: 'linear-gradient(135deg, #0f1e30 0%, #1c3248 100%)',
-    image: null,
+    image: '/work/idea-bank-hero.png',
     logo: '/logos/Juniper logo.svg',
     year: '2025',
     company: 'Arbisoft',
     platform: 'Web',
-    heroImage: null,
+    heroImage: '/work/idea-bank-hero.png',
     heroPlaceholder: 'linear-gradient(135deg, #0f1e30 0%, #1c3248 100%)',
     heroMeta: [
       ['Company', 'Arbisoft'],
@@ -648,7 +648,7 @@ export const projects: Project[] = [
       statement:
         'A lightweight internal idea platform, taken from discovery to MVP launch in two weeks, solo, with AI-assisted development.',
       paragraph:
-        'As part of Juniper, Arbisoft’s internal product-culture initiative, I built Idea Bank: a platform where employees submit, discuss, and build traction around product ideas. I ran discovery, scoped the MVP, and built, tested, and launched it myself, no dedicated engineering team, just AI-assisted tools and a disciplined, tight scope.',
+        'As part of Juniper, Arbisoft’s internal innovation initiative, I built the Idea Bank: a platform where employees submit, discuss, and build traction around product ideas. I ran discovery, scoped the MVP, and built, tested, and launched it myself, no dedicated engineering team, just AI-assisted tools and a disciplined, tight scope.',
       facts: [
         { label: 'Role', value: 'Product lead & solo builder' },
         { label: 'Timeline', value: '2 weeks, concept → launch' },
