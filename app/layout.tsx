@@ -29,6 +29,9 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap"
+          // Fontshare rejects requests with a localhost referer, which silently
+          // dropped Satoshi in local dev — so send no referer at all
+          referrerPolicy="no-referrer"
         />
       </head>
       <body style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>{children}</body>
