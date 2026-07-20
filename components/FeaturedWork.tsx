@@ -5,7 +5,7 @@ const publishedProjects = projects.filter((project) => project.published)
 
 export default function FeaturedWork() {
   return (
-    <section className="px-6 md:px-14 py-28" style={{ background: '#f5f5f5' }}>
+    <section id="work" className="px-6 md:px-14 py-28" style={{ background: '#f5f5f5' }}>
       <div className="max-w-6xl mx-auto">
 
         {/* Section header */}

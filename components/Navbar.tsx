@@ -1,17 +1,28 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import GetInTouchButton from './GetInTouchButton'
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t
 }
 
+// Root-relative so they land on the home page sections from any route;
+// on the home page itself the browser treats them as same-page scrolls.
 const links: [string, string][] = [
-  ['Home', '#'],
-  ['About', '#about'],
-  ['Work', '#work'],
+  ['Home', '/'],
+  ['About', '/#about'],
+  ['Work', '/#work'],
 ]
+
+// Next skips the scroll reset when the route doesn't change, so clicking
+// Home while already on the landing page needs a manual scroll to top.
+function scrollTopIfHome(href: string) {
+  if (href === '/' && window.location.pathname === '/') {
+    window.scrollTo({ top: 0 })
+  }
+}
 
 export default function Navbar() {
   const [progress, setProgress] = useState(0)
@@ -84,15 +95,16 @@ export default function Navbar() {
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8 t-nav">
           {links.map(([label, href]) => (
-            <a
+            <Link
               key={label}
               href={href}
+              onClick={() => scrollTopIfHome(href)}
               style={{ color: textColor, textShadow, transition: 'opacity 0.15s' }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -137,15 +149,18 @@ export default function Navbar() {
         style={{ zIndex: -1 }}
       >
         {links.map(([label, href]) => (
-          <a
+          <Link
             key={label}
             href={href}
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false)
+              scrollTopIfHome(href)
+            }}
             className="t-nav py-3"
             style={{ color: '#0f172a', fontSize: '1.25rem' }}
           >
             {label}
-          </a>
+          </Link>
         ))}
         <div className="mt-4">
           <GetInTouchButton variant="onLight" />

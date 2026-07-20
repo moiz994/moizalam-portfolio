@@ -61,6 +61,11 @@
   transition-delay: 0.1s;
 }
 
+/* Anchored sections stop short of the fixed navbar instead of sliding under it */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 body {
   background-color: #ffffff;
   color: #0f172a;
