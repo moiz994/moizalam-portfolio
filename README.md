@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# moizalam.com
 
-## Getting Started
+Personal portfolio of **Moiz Alam** — Product Manager. Live at [moizalam.com](https://moizalam.com).
 
-First, run the development server:
+A single-page landing (hero, about, career journey, featured work) plus full case-study pages, built as a fully static site.
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router) with `output: 'export'` — builds to plain static files, no server
+- TypeScript + Tailwind CSS, with most component styling inline
+- Fonts: [Satoshi](https://www.fontshare.com/fonts/satoshi) (display/headings, via Fontshare CDN) and Oxygen (body, self-hosted via `next/font`)
+
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build` produces the static site in `out/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How content works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Everything shown on the site is driven by **`data/projects.ts`** — the single source of truth for the featured work grid and the case-study pages.
 
-## Learn More
+- Each project has card fields (title, description, tags, thumbnail) and a detail page built from **content blocks** — reusable sections like `section`, `metrics`, `timeline`, `beforeAfter`, `carousel`, `tileGrid`, etc.
+- **`published: true`** makes a project visible. Unpublished projects stay off the home grid and don't get a page built, so drafts can live in the data file safely.
+- **[/blocks](https://moizalam.com/blocks)** is an internal reference page (not linked anywhere) that renders every block type with placeholder content — useful when writing a new case study.
 
-To learn more about Next.js, take a look at the following resources:
+To add a case study: add images to `public/work/`, write the project entry in `data/projects.ts` using blocks, set `published: true`, and push.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Pushing to `main` triggers the GitHub Actions workflow (`.github/workflows/deploy.yml`), which builds the site and deploys it to **GitHub Pages** under the custom domain `moizalam.com` (set by `public/CNAME`). No manual steps.
 
-## Deploy on Vercel
+## Project layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/                  # routes: landing page, /work/[slug], /blocks
+components/           # landing page sections + navbar
+components/work/      # case-study building blocks (WorkBody renders them)
+data/projects.ts      # all portfolio content lives here
+public/work/          # case-study images
+public/logos/         # company/brand logos
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Gotchas
+
+- The Fontshare stylesheet link needs `referrerPolicy="no-referrer"` — Fontshare rejects requests with a `localhost` referer, which silently breaks headings in local dev.
+- Case-study routes are prerendered from `generateStaticParams`, so a project won't have a page until it's `published` and rebuilt.
