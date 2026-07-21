@@ -30,14 +30,14 @@ export async function generateMetadata({
       siteName: 'Moiz Alam',
       type: 'article',
       // defining openGraph here replaces the root metadata's, so the branded
-      // card from app/opengraph-image.tsx has to be re-attached explicitly
-      images: ['/opengraph-image'],
+      // card has to be re-attached explicitly
+      images: ['/og-card.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${project.title} · Moiz Alam`,
       description: project.description,
-      images: ['/opengraph-image'],
+      images: ['/og-card.png'],
     },
   }
 }

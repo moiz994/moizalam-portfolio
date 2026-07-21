@@ -23,11 +23,15 @@ export const metadata: Metadata = {
     siteName: "Moiz Alam",
     type: "website",
     locale: "en_US",
+    // a static file rather than a generated route: GitHub Pages picks the
+    // content-type from the extension, and share crawlers require image/png
+    images: ["/og-card.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Moiz Alam · Product Manager",
     description: "Product Manager focused on building intuitive products that solve real-world problems.",
+    images: ["/og-card.png"],
   },
 };
 
