@@ -23,6 +23,22 @@ export async function generateMetadata({
   return {
     title: `${project.title} · Moiz Alam`,
     description: project.description,
+    openGraph: {
+      title: `${project.title} · Moiz Alam`,
+      description: project.description,
+      url: `https://moizalam.com/work/${project.slug}`,
+      siteName: 'Moiz Alam',
+      type: 'article',
+      // defining openGraph here replaces the root metadata's, so the branded
+      // card from app/opengraph-image.tsx has to be re-attached explicitly
+      images: ['/opengraph-image'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} · Moiz Alam`,
+      description: project.description,
+      images: ['/opengraph-image'],
+    },
   }
 }
 

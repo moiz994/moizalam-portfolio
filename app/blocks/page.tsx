@@ -1,9 +1,15 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import type { Block } from '@/data/projects'
 import { BlockView } from '@/components/work/WorkBody'
 
 // TEMPORARY internal reference page. Not linked anywhere in the site.
 // Reachable only at /blocks. Delete this folder to remove it.
+
+export const metadata: Metadata = {
+  title: 'Content blocks · internal',
+  robots: { index: false, follow: false },
+}
 
 type Entry = { name: string; when: string; block: Block }
 

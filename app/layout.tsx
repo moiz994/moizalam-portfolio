@@ -10,10 +10,24 @@ const oxygen = Oxygen({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://moizalam.com"),
   title: "Moiz Alam · Product Manager",
   description: "Product Manager focused on building intuitive products that solve real-world problems.",
   icons: {
     icon: '/favicon.svg',
+  },
+  openGraph: {
+    title: "Moiz Alam · Product Manager",
+    description: "Product Manager focused on building intuitive products that solve real-world problems.",
+    url: "https://moizalam.com",
+    siteName: "Moiz Alam",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Moiz Alam · Product Manager",
+    description: "Product Manager focused on building intuitive products that solve real-world problems.",
   },
 };
 
