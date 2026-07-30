@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Oxygen } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
+
+// GA4 measurement ID. Safe to keep in source: it ships in the page HTML either
+// way, and this is a static export so there is no server to read an env var.
+// Paste the "G-" ID from Google Analytics > Admin > Data streams here.
+const GA_MEASUREMENT_ID = "G-73Y853PV1S";
 
 const oxygen = Oxygen({
   variable: "--font-oxygen",
@@ -53,6 +59,7 @@ export default function RootLayout({
         />
       </head>
       <body style={{ backgroundColor: '#ffffff', color: '#0f172a' }}>{children}</body>
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
     </html>
   );
 }
