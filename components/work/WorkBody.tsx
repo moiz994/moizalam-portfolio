@@ -6,11 +6,13 @@ import InlineGallery from './InlineGallery'
 // placeholder. Mirrors the FeaturedWork card treatment.
 function ImageBlock({
   src,
+  video,
   ratio = '16 / 9',
   caption,
   tint = false,
 }: {
   src?: string
+  video?: string
   ratio?: string
   caption?: string
   // adds a subtle cream wash so white-background screenshots separate from the page
@@ -18,7 +20,18 @@ function ImageBlock({
 }) {
   return (
     <figure className="m-0">
-      {src ? (
+      {video ? (
+        <div style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden' }}>
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </div>
+      ) : src ? (
         <div style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden' }}>
           <img
             src={src}
@@ -105,7 +118,7 @@ export function BlockView({ block }: { block: Block }) {
       )
 
     case 'image':
-      return <ImageBlock src={block.src} ratio={block.ratio} caption={block.caption} />
+      return <ImageBlock src={block.src} video={block.video} ratio={block.ratio} caption={block.caption} />
 
     case 'gallery':
       return (

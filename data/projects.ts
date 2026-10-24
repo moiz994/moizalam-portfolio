@@ -3,7 +3,8 @@
 
 export type Block =
   | { type: 'section'; label?: string; heading: string; body?: string[]; bullets?: string[] }
-  | { type: 'image'; src?: string; ratio?: string; caption?: string }
+  // video is a looping, muted, autoplaying clip (e.g. a product walkthrough); takes precedence over src
+  | { type: 'image'; src?: string; video?: string; ratio?: string; caption?: string }
   | { type: 'gallery'; items: { src?: string; ratio?: string; caption?: string; tint?: boolean }[] }
   | { type: 'callout'; text: string; attribution?: string }
   | { type: 'quote'; label?: string; text: string; attribution?: string }
@@ -692,11 +693,10 @@ export const projects: Project[] = [
         ],
       },
       {
-        type: 'gallery',
-        items: [
-          { caption: 'Placeholder: idea submission flow.' },
-          { caption: 'Placeholder: leaderboard and badges.' },
-        ],
+        type: 'image',
+        video: '/work/idea-bank-browse-demo.mp4',
+        ratio: '8 / 5',
+        caption: 'The Idea Bank home feed, browsing what the team has submitted.',
       },
       {
         type: 'columns',
